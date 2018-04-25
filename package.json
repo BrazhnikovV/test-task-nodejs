@@ -15,7 +15,11 @@
   },
   "description": "Web application nodejs with express",
   "main": "app.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "1.7.0",
+    "should": "1.2.1",
+    "supertest": "0.4.0"
+  },
   "repository": {
     "type": "git",
     "url": "http://BrazhnikovV@scm.p-trs.ru/scm/git/test-task-nodejs"
