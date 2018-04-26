@@ -1,19 +1,25 @@
+//
 var express = require( 'express' ),
-    ejsLocals = require('ejs-locals'),
+    ejsLocals = require( 'ejs-locals' ),
     app = express(),
     pages = require( __dirname + '/controllers/pages' );
 
 // Поключаем механизм для работы с представлениями
-app.engine('ejs', ejsLocals)
-app.set('views', __dirname + '/views')
-app.set('view engine', 'ejs')
+app.engine( 'ejs', ejsLocals )
+app.set( 'views', __dirname + '/views' )
+app.set( 'view engine', 'ejs' )
+
+// Подключаем папку для статики ==> не рабочий вариант
+//app.use( express.static( __dirname + '/public' ) );
 
 // Подключаем папку для статики
-app.use(express.static( __dirname + '/public' ) );
+app.use( express.static( 'public' ) );
 
-//app.get('/', function (req, res) {
-//    res.send('Hello, Express!')
-//});
+// Установим переменную route
+app.use(function ( req, res, next ) {
+    app.locals.route = req.url;
+    next();
+});
 
 app.get( '/', function ( req, res ) { 
     res.redirect( '/home' ); 
