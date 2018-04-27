@@ -1,8 +1,15 @@
-//
-var express = require( 'express' ),
-    ejsLocals = require( 'ejs-locals' ),
-    app = express(),
-    pages = require( __dirname + '/controllers/pages' );
+// подключить главные модули приложения
+var express     = require( 'express' );
+var compression = require('compression');
+var ejsLocals   = require( 'ejs-locals' );
+var helmet      = require('helmet');
+
+var app = express();
+
+app.use( compression() );
+app.use( helmet() );
+
+var pages = require( __dirname + '/controllers/pages' );
 
 // Поключаем механизм для работы с представлениями
 app.engine( 'ejs', ejsLocals )
