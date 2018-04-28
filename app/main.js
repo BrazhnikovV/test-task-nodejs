@@ -1,13 +1,13 @@
 // подключить главные модули приложения
 var express     = require( 'express' );
-var compression = require('compression');
+//var compression = require('compression');
+//var helmet      = require('helmet');
 var ejsLocals   = require( 'ejs-locals' );
-var helmet      = require('helmet');
 
 var app = express();
 
-app.use( compression() );
-app.use( helmet() );
+//app.use( compression() );
+//app.use( helmet() );
 
 var pages = require( __dirname + '/controllers/pages' );
 
