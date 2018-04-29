@@ -4,3 +4,14 @@
 .container .row nav.navbar {
   margin-bottom: 10px;
 }
+
+#login .form-group {
+  position: relative;
+}
+
+#login .invalid-feedback {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  text-align: right;
+}

@@ -19,3 +19,14 @@ exports.about = function (req, res) {
         message: 'This is the "about" action of "pages" controller'
     });
 };
+
+/**
+ * This is the 'user' action that is invoked
+ * when an action is not explicitly requested by users.
+ */
+exports.login = function (req, res) {
+    res.render('pages/login', {
+        title: 'Login', 
+        message: 'This is the "login" action of "pages" controller'
+    });
+};
