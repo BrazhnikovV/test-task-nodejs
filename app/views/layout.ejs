@@ -14,11 +14,26 @@
 <body>
   <div class="container">    
     <div class="row">
-      <div class="col-sm-12 text-right in-out-block">          
-        <i class="fas fa-lock-open" ></i>&nbsp;&nbsp;
-        <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
-          Выйти
-        </button>
+      <div id="user-info" class="col-6 in-out-block">        
+        <% if(user === "Guest") { %>
+          <i class="fas fa-user-secret"></i>              
+        <% } else { %>
+          <i class="fas fa-user"></i>
+        <% } %>
+        <span class="align-middle">&nbsp; <%= user %></span>
+      </div>
+      <div class="col-6 text-right in-out-block">       
+        <% if(user !== "Guest") { %>
+          <i class="fas fa-lock-open" ></i>&nbsp;&nbsp;
+          <a id="" class="" href="/logout">
+            <button type="button" class="btn btn-primary">Выйти</button>
+          </a>
+        <% } else { %>
+          <i class="fas fa-lock" ></i>&nbsp;&nbsp;
+          <a id="" class="" href="/login">
+            <button type="button" class="btn btn-primary">Войти</button>
+          </a>
+        <% } %>                   
       </div>      
     </div>
   </div>  
@@ -26,19 +41,33 @@
     <div class="row">
       <div class="col-sm-12">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <a class="navbar-brand" href="#">Node-express</a>
+          <a class="navbar-brand" href="/">Node-express</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
         
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-              </li>
+            <ul class="navbar-nav mr-auto">    
+              <li class="nav-item">                  
+                  <a class="nav-link" href="/products">
+                    <i class="fas fa-list-ul"></i>
+                    &nbsp;Продукты
+                  </a>
+              </li>          
               <li class="nav-item">
-                <a class="nav-link" href="/about">About</a>
+                <a class="nav-link" href="/about">
+                  <i class="fab fa-adn"></i>
+                  &nbsp;О нас
+                </a>
               </li>
+              <% if(user !== "Guest") { %>
+                <li class="nav-item">                    
+                    <a class="nav-link" href="/users">
+                      <i class="fas fa-users"></i>
+                      &nbsp;Пользователи
+                    </a>
+                </li>
+              <% } %>              
               <!--<li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Dropdown
@@ -66,9 +95,7 @@
       <div class="col-sm-12">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="/about">About</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Info</li>
+            <li class="breadcrumb-item active" aria-current="page">Home</li>
           </ol>
         </nav>
       </div>

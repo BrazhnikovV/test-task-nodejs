@@ -4,13 +4,17 @@ var router = express.Router();
 // подключить express-form
 var form = require('express-form');
 var field = form.field;
+// Модель пользователя системы
+var User = require( '../app/models/user' ).User;
 
 /* GET login page. */
 router.get('/', function(req, res, next) {
-    if ( req.session.hasOwnProperty( 'user' ) ) {
+    if ( req.session.hasOwnProperty( 'user' ) ) {      
+        res.locals.user = req.session.user;  
         res.redirect( '/' );
     }
     else {
+        res.locals.user = 'Guest';
         res.render( './pages/login', { 
              title: '', errors: []
         });
@@ -30,7 +34,8 @@ router.post( '/',
         if ( !req.form.isValid ) {
             res.render( 'pages/login', { 
                 title: req.form.errors, 
-                errors: req.form.errors
+                errors: req.form.errors,
+                user: 'Guest'
             });
         } 
         else {
@@ -41,9 +46,11 @@ router.post( '/',
 
                 if ( results.length ) {
                     req.session.user = req.form.username;
+                    req.user = req.form.username;
                     res.redirect( '/' );                
                 }
-                else {                    
+                else {
+                    res.locals.user = 'Guest';
                     res.render( 'pages/login', { 
                         title: req.form.errors, 
                         errors: ['Пользователь не найден.']

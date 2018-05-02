@@ -19,11 +19,13 @@ var compression = require('compression');
 var helmet = require('helmet');
 // Подключить ejs-locals для лэйаута
 var ejsLocals = require( 'ejs-locals' );
-// Модель пользователя системы
-var User = require( './models/user' ).User;
 // Подключить роутеры
-var login = require( '../routes/login' );
-var about = require( '../routes/about' );
+var home   = require( '../routes/home' );
+var login  = require( '../routes/login' );
+var about  = require( '../routes/about' );
+var users  = require( '../routes/users' );
+var logout = require( '../routes/logout' );
+var products  = require( '../routes/products' );
 
 // Создание главного объекта приложения
 var app = express();
@@ -46,7 +48,7 @@ app.use( compression() );
 // Включаем защиту
 app.use( helmet() );
 
-var pages = require( __dirname + '/controllers/pages' );
+//var pages = require( __dirname + '/controllers/pages' );
 
 // Поключаем механизм для работы с представлениями
 app.engine( 'ejs', ejsLocals );
@@ -54,9 +56,12 @@ app.set( 'views', __dirname + '/views' );
 app.set( 'view engine', 'ejs' );
 
 // Обрабатываем заданные для приложения роуты 
-app.get( '/', pages.home );
+app.get( '/', home );
 app.use( '/login', login );
 app.use( '/about', about );
+app.use( '/users', users );
+app.use( '/products', products );
+app.use( '/logout', logout );
 
 // Обработать 404-ю ошибку
 app.use(function(req, res, next) {

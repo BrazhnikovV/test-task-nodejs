@@ -1,0 +1,42 @@
+<% layout('../layout') -%>
+<div class="row">
+    <div class="col-sm-6">
+        <h1><%= title %></h1>
+    </div>
+    <div class="col-sm-6 margin-auto">
+        <div class="btn-group" role="group" aria-label="Basic example">  
+            <a href="/users/add">
+                <button id="btn-add-user" type="button" class="btn btn-secondary">
+                    <i class="far fa-plus-square" ></i>
+                    &nbsp;Добавить пользователя
+                </button>
+            </a>                      
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <table id="users-list" class="table table-sm table-bordered table-striped table-hover ">
+            <thead class="">
+                <tr>
+                    <th>№</th>
+                    <th>username</th>
+                    <th>_id</th>
+                    <th>salt</th>
+                    <th>hashedPassword</th>
+                </tr>
+            </thead>
+            <tbody>                                            
+            <% users.forEach(function(user,index) { %>
+                <tr>
+                    <td><%= (index +1) %></td>
+                    <td><%= user.username %></td>
+                    <td><%= user._id %></td>
+                    <td><%= user.salt %></td>
+                    <td><%= user.hashedPassword %></td>                        
+                </tr>                        
+            <% }); %>
+            </tbody>
+        </table>        
+    </div>
+</div>

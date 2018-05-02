@@ -6,15 +6,15 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     if ( req.session.hasOwnProperty( 'user' ) ) {
         res.locals.user = req.session.user;
-        res.render( './pages/about', { 
-            title: 'О нас', 
+        res.render( './pages/home', { 
+            title: 'Home', 
             errors: [],
         });
     }
     else {
         res.locals.user = 'Guest';
-        res.render( './pages/about', { 
-            title: 'О нас', 
+        res.render( './pages/home', { 
+            title: 'Home', 
             errors: [],
         });
     }

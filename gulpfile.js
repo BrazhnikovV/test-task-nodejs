@@ -50,12 +50,14 @@ gulp.task('copy', function () {
 });
 
 // image processing
+/*
 gulp.task('images', function() {
     return gulp.src('public/images/*')
       .pipe(newer('public/dist/images'))
       .pipe(imagemin({ optimizationLevel: 2 }))
       .pipe(gulp.dest('public/dist/images'));
   });
+*/
 
 // Watch Files For Changes
 gulp.task('watch', function() {
@@ -65,4 +67,4 @@ gulp.task('watch', function() {
 });
 
 // Default Task
-gulp.task('default', ['copy','lint', 'images', 'sass', 'scripts', 'css','watch']);
+gulp.task('default', ['copy','lint', /*'images',*/ 'sass', 'scripts', 'css','watch']);
