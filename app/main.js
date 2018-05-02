@@ -1,20 +1,50 @@
 // подключить главные модули приложения
-var express     = require( 'express' );
+var express = require( 'express' );
+var router = express.Router();
+// подключить сессии от express
+var express_session = require( 'express-session' );
 // подключить body_parser
-var body_parser = require('body-parser');
-//var compression = require('compression');
-//var helmet      = require('helmet');
-var ejsLocals   = require( 'ejs-locals' );
+var body_parser = require( 'body-parser' );
+// подключить cookie_parser
+var cookie_parser = require( 'cookie-parser' );
+// подключить cookie_parser
+var mongo_store = require('connect-mongo')( express_session );
+// подключить mongoose
+var mongoose = require( '../libs/mongoose' );
+// Подключаем конфиг приложения
+var config = require( '../config' );
+// Подключить зжатие данных
+var compression = require('compression');
+// Подключить защиту заголовков
+var helmet = require('helmet');
+// Подключить ejs-locals для лэйаута
+var ejsLocals = require( 'ejs-locals' );
+// Модель пользователя системы
+var User = require( './models/user' ).User;
+// Подключить роутеры
+var login = require( '../routes/login' );
+var about = require( '../routes/about' );
 
-// подключить express-form
-var form = require('express-form');
-var field = form.field;
-
+// Создание главного объекта приложения
 var app = express();
+app.use( body_parser() );
 
-app.use(body_parser());
-//app.use( compression() );
-//app.use( helmet() );
+// Создание сессии пользователя
+app.use( express_session({
+    secret: config.get( 'session:secret' ),
+    key: config.get( 'session:key' ),
+    cookie: config.get( 'session:cookie' ),
+    store: new mongo_store({
+        mongooseConnection: mongoose.connection
+    })
+ }));
+
+// Подключаем папку для статики
+app.use( express.static( 'public' ) );
+// Включаем сжатие
+app.use( compression() );
+// Включаем защиту
+app.use( helmet() );
 
 var pages = require( __dirname + '/controllers/pages' );
 
@@ -23,49 +53,20 @@ app.engine( 'ejs', ejsLocals );
 app.set( 'views', __dirname + '/views' );
 app.set( 'view engine', 'ejs' );
 
-// Подключаем папку для статики
-app.use( express.static( 'public' ) );
-
+// Обрабатываем заданные для приложения роуты 
 app.get( '/', pages.home );
-
-app.get( '/login', function (req, res) {
-    res.render( 'pages/login', { title: '', errors: [] });
-});
-
-app.get( '/home', pages.home );
-
-app.get( '/about', pages.about );
-
-// Обработать POST на адрес /login
-app.post( '/login',
-    // Form filter and validation middleware 
-    form(
-        field("username").trim().required().is(/^[a-z]+$/),
-        field("password").trim().required().is(/^[0-9]+$/)
-    ),
-   
-    // Express request-handler now receives filtered and validated data 
-    function(req, res){
-        if ( !req.form.isValid ) {
-            res.render( 'pages/login', { 
-                title: req.form.errors, 
-                errors: req.form.errors
-            });
-        } 
-        else {
-            res.render( 'pages/login', { });         
-        }
-    }
-);
+app.use( '/login', login );
+app.use( '/about', about );
 
 // Обработать 404-ю ошибку
 app.use(function(req, res, next) {
-    res.status(404).render('error', { title: 'Error 404' });
+    res.status(404).render( 'error', { title: 'Error 404' });
 });
 
+// Обработать все остальные ошибки
 app.use(function( err, req, res, next ) {
     console.error( err.stack );
-    res.status(500).render('error', { title: 'Error 505' });
+    res.status( 500 ).render( 'error', { title: 'Error 505' });
 });
 
 module.exports = app;
