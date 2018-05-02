@@ -1,60 +1,33 @@
 <% layout('../layout') -%>
-<h1><%= title %></h1>
 <div class="row">
-    <div class="col-sm-4">        
-        <div class="card text-white bg-secondary mb-3">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-            <h5 class="card-title">Secondary card title</h5>
-            <p class="card-text">Some quick example text to build on.</p>
-            </div>
-        </div>      
-    </div>
-    <div class="col-sm-4">        
-        <div class="card text-white bg-secondary mb-3">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-            <h5 class="card-title">Secondary card title</h5>
-            <p class="card-text">Some quick example text to build on.</p>
-            </div>
-        </div>      
-    </div>
-    <div class="col-sm-4">        
-        <div class="card text-white bg-secondary mb-3">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-            <h5 class="card-title">Secondary card title</h5>
-            <p class="card-text">Some quick example text to build on.</p>
-            </div>
-        </div>      
-    </div>
+    <div class="col-sm-6">
+            <h1><%= title %></h1>
+    </div>    
+    <div class="col-sm-6 margin-auto">
+        <div class="btn-group" role="group" aria-label="Basic example">  
+            <a href="/products/add">
+                <button id="btn-add-user" type="button" class="btn btn-dark">
+                    <i class="far fa-plus-square" ></i>
+                    &nbsp;Добавить продукт
+                </button>
+            </a>                      
+        </div>
+    </div>    
 </div>
 <div class="row">
-    <div class="col-sm-4">        
-        <div class="card text-white bg-secondary mb-3">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-            <h5 class="card-title">Secondary card title</h5>
-            <p class="card-text">Some quick example text to build on.</p>
-            </div>
-        </div>      
-    </div>
-    <div class="col-sm-4">        
-        <div class="card text-white bg-secondary mb-3">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-            <h5 class="card-title">Secondary card title</h5>
-            <p class="card-text">Some quick example text to build on.</p>
-            </div>
-        </div>      
-    </div>
-    <div class="col-sm-4">        
-        <div class="card text-white bg-secondary mb-3">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-            <h5 class="card-title">Secondary card title</h5>
-            <p class="card-text">Some quick example text to build on.</p>
-            </div>
-        </div>      
-    </div>
+    <% products.forEach(function(product,index) { %>
+        <div class="col-sm-4">        
+            <div class="card text-white bg-secondary mb-3">
+                <form id="<%= product.name %>" method="post" action="/products/delete">
+                    <input type="hidden" id="<%= product.name %>" name="product_name" value="<%= product.name %>" />
+                    <button type="submit" class="btn btn-danger del-product btn-sm">x</button>
+                </form>
+                <div class="card-header"><%= product.name %></div>
+                <div class="card-body">
+                    <h5 class="card-title"><%= product.title %></h5>
+                    <p class="card-text"><%= product.description %></p>
+                </div>
+            </div>      
+        </div>
+    <% }); %>        
 </div>

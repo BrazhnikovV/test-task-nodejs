@@ -7,14 +7,14 @@ router.get('/', function(req, res, next) {
     if ( req.session.hasOwnProperty( 'user' ) ) {
         res.locals.user = req.session.user;
         res.render( './pages/home', { 
-            title: 'Home', 
+            title: 'NodeJs', 
             errors: [],
         });
     }
     else {
         res.locals.user = 'Guest';
         res.render( './pages/home', { 
-            title: 'Home', 
+            title: 'NodeJs', 
             errors: [],
         });
     }

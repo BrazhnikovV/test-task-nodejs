@@ -1,0 +1,55 @@
+<% layout('../layout') -%>
+<div class="row">
+    <div class="col-sm-12">
+        <h1><%= title %></h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <form id="form-add-user" method="post" action="/products/add">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon3">Название</span>
+                    </div>
+                    <input type="text" class="form-control<% if(errors[0]) { %> is-invalid <% } %>" id="name" name="name" placeholder="Введите название продукта" aria-describedby="basic-addon3" />                    
+                    <% if(errors[0]) { %>
+                        <div class="invalid-feedback">
+                            <p><%= errors[0] %></p>
+                        </div>
+                    <% } %>
+                </div>
+                <small id="emailHelp" class="form-text text-muted">Можно использовать русские буквы.</small>                  
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon3">Заголовок</span>
+                    </div>
+                    <input type="text" class="form-control<% if(errors[1]) { %> is-invalid <% } %>" id="title" name="title" placeholder="Введите заголовок" aria-describedby="basic-addon3">
+                    <% if(errors[1]) { %>
+                        <div class="invalid-feedback">
+                            <p><%= errors[1] %></p>
+                        </div>
+                    <% } %>
+                </div> 
+                <small id="emailHelp" class="form-text text-muted">Можно использовать русские буквы.</small>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon3">Описание</span>
+                    </div>
+                    <textarea class="form-control <% if(errors[2]) { %> is-invalid <% } %>" id="description" name="description" placeholder="" rows="5"></textarea>
+                    <% if(errors[2]) { %>
+                        <div class="invalid-feedback">
+                            <p><%= errors[2] %></p>
+                        </div>
+                    <% } %>
+                </div> 
+                <small id="emailHelp" class="form-text text-muted">Можно использовать русские буквы.</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>    
+    </div>
+</div>
