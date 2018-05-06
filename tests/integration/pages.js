@@ -2,25 +2,26 @@ var request = require('supertest'), app = require(__dirname + '/../../app');
 
 describe('Pages', function () {
     describe('GET /', function () {
-        it('should redirect to "home"', function (done) {
+        it('should Home page => return status code 200', function (done) {
             request(app)
                 .get('/')
-                .expect('location', '/home')
-                .expect(302, done)
+                .expect(200, done)
+                //.expect('location', '/')
+                //.expect(302, done)
         });
     });
 
-    describe('GET /home', function () {
+    describe('GET /products', function () {
         it('should return status code 200', function (done) {
             request(app)
-                .get('/home')
+                .get('/products')
                 .expect(200, done)
         });
   
-        it('should contain text "Home page"', function (done) {
+        it('should contain text "Продукты"', function (done) {
             request(app)
-                .get('/home')
-                .expect(/Home page/, done)
+                .get('/products')
+                .expect(/Продукты/, done)
         });
     });
 });
