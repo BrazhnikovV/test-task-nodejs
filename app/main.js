@@ -19,6 +19,8 @@ var compression = require('compression');
 var helmet = require('helmet');
 // Подключить ejs-locals для лэйаута
 var ejsLocals = require( 'ejs-locals' );
+//
+var url = require('url');  
 // Подключить роутеры
 var home   = require( '../routes/home' );
 var login  = require( '../routes/login' );
@@ -54,6 +56,15 @@ app.use( helmet() );
 app.engine( 'ejs', ejsLocals );
 app.set( 'views', __dirname + '/views' );
 app.set( 'view engine', 'ejs' );
+
+app.get('*',function (req, res, next) {    
+    if ( req.path.search( /\./i ) ) {        
+        let parsed_url = req.path.split('\/');
+        res.locals.breadcrumb = req.path;
+        console.log('<<<<<<<<<<<< === ' + parsed_url + ' === >>>>>>>>>>>');
+    }
+    next();
+});
 
 // Обрабатываем заданные для приложения роуты 
 app.get( '/', home );

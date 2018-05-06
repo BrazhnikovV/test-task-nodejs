@@ -50,7 +50,7 @@ router.get( '/add', function( req, res, next ) {
     }
 });
 
-/* POST products page. */
+/* POST products/add page. */
 router.post( '/add',
     // Form filter and validation middleware 
     form(
@@ -97,7 +97,7 @@ router.post( '/add',
     }
 );
 
-/* POST products page. */
+/* POST products/delete page. */
 router.post( '/delete',
     function(req, res){        
         if ( req.session.hasOwnProperty( 'user' ) ) {
@@ -110,6 +110,28 @@ router.post( '/delete',
                 res.redirect( '/products' );
             });
         } 
+        else {
+            res.redirect( '/products' );
+        }
+    }
+);
+
+/* POST products/deleteall page. */
+router.post( '/deleteall',
+    function(req, res){        
+        if ( req.session.hasOwnProperty( 'user' ) ) {
+            res.locals.user = req.session.user; 
+            Product.remove(function ( err, results ) {
+                if ( err ) {
+                    return console.error(err);
+                }
+
+                res.redirect( '/products' );
+            });
+        } 
+        else {
+            res.redirect( '/products' );
+        }
     }
 );
 
