@@ -60,11 +60,11 @@ gulp.task('images', function() {
 */
 
 // Watch Files For Changes
-gulp.task('watch', function() {
-    gulp.watch('public/js/*.js', ['lint', 'scripts']);
-    gulp.watch('public/scss/*.scss', ['sass']);
-    gulp.watch('public/images/*', ['images']);
-});
+//gulp.task('watch', function() {
+//    gulp.watch('public/js/*.js', ['lint', 'scripts']);
+//    gulp.watch('public/scss/*.scss', ['sass']);
+//    gulp.watch('public/images/*', ['images']);
+//});
 
 // Default Task
-gulp.task('default', ['copy','lint', /*'images',*/ 'sass', 'scripts', 'css','watch']);
+gulp.task('default', ['copy','lint', /*'images',*/ 'sass', 'scripts', 'css'/*,'watch' */]);

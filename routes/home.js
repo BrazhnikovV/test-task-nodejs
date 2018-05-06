@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
             errors: [],
         });
     }
-    else {
+    else {        
         res.locals.user = 'Guest';
         res.render( './pages/home', { 
             title: 'NodeJs', 

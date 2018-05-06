@@ -65,13 +65,17 @@ app.use( '/logout', logout );
 
 // Обработать 404-ю ошибку
 app.use(function(req, res, next) {
+    res.locals.user = 'Guest';
     res.status(404).render( 'error', { title: 'Error 404' });
 });
 
 // Обработать все остальные ошибки
 app.use(function( err, req, res, next ) {
     console.error( err.stack );
-    res.status( 500 ).render( 'error', { title: 'Error 505' });
+    res.locals.user = 'Guest';
+    res.status( 500 ).render( 'error', { 
+        title: 'Error 505',
+    });
 });
 
 module.exports = app;
