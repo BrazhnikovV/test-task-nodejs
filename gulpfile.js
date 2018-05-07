@@ -28,7 +28,8 @@ gulp.task('sass', function() {
 
 // Concatenate & Minify JS
 gulp.task('scripts', function() {
-    return gulp.src('public/js/*.js')
+    return //gulp.src('public/js/*.js')
+        gulp.src(['public/js/bootstrap.js'])
         .pipe(concat('all.js'))
         .pipe(gulp.dest('public/dist'))
         .pipe(rename('all.min.js'))
@@ -38,11 +39,16 @@ gulp.task('scripts', function() {
 
 // Concatenate & Minify CSS
 gulp.task('css', function () {
-    gulp.src('public/css/*.css')
-        .pipe(concat('all.css'))
-        .pipe(cssmin())        
-        .pipe(rename('all.min.css'))
-        .pipe(gulp.dest('public/dist/css'));
+    //gulp.src('public/css/*.css')
+    gulp.src([
+        'public/css/main.css',
+        'public/css/bootstrap.css',
+        'fontawesome-all.min.css'
+    ])
+    .pipe(concat('all.css'))
+    .pipe(cssmin())        
+    .pipe(rename('all.min.css'))
+    .pipe(gulp.dest('public/dist/css'));
 });
 
 // copy fonts
