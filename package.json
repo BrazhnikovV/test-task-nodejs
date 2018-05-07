@@ -20,6 +20,7 @@
     "helmet": "^3.12.0",
     "hoek": "^5.0.3",
     "http-errors": "~1.6.2",
+    "js-image-generator": "^1.0.2",
     "mongodb": "^3.0.7",
     "mongoose": "^5.0.17",
     "morgan": "~1.9.0",

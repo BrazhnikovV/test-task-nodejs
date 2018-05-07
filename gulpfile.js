@@ -42,8 +42,7 @@ gulp.task('css', function () {
     //gulp.src('public/css/*.css')
     gulp.src([
         'public/css/main.css',
-        'public/css/bootstrap.css',
-        'fontawesome-all.min.css'
+        'public/css/bootstrap.css'
     ])
     .pipe(concat('all.css'))
     .pipe(cssmin())        

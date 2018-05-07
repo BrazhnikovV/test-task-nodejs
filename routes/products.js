@@ -7,8 +7,11 @@ var field = form.field;
 // Модель пользователя системы
 var Product = require( '../app/models/product' ).Product;
 
+var fs = require('fs');
+var img_gen = require('js-image-generator');
+
 /* GET products page. */
-router.get( '/', function( req, res, next ) {                 
+router.get( '/', function( req, res, next ) {      
     Product.find({},function ( err, results ) {
         if ( err ) {
             return console.error(err);
@@ -22,6 +25,9 @@ router.get( '/', function( req, res, next ) {
             });
         } 
         else {
+            results.forEach( function( key, index ) {
+                console.log( key, index );
+            });
             res.locals.user = 'Guest';  
             res.render( './pages/products', { 
                 title: 'Продукты', 
@@ -82,15 +88,20 @@ router.post( '/add',
                     });                    
                 }
                 else {
-                    var product = new Product({ 
-                        name: req.form.name, 
-                        title: req.form.title,
-                        description: req.form.description
-                    });
+                    img_gen.generateImage(800, 600, 80, function(err, image) {
+                        fs.writeFileSync('public/dist/images/'+req.form.name+'.jpg', image.data);
 
-                    product.save(function ( err, results ) {
-                        res.redirect( '/products' );
-                    });                  
+                        var product = new Product({ 
+                            name: req.form.name, 
+                            title: req.form.title,
+                            description: req.form.description,
+                            image: '/dist/images/'+req.form.name+'.jpg'
+                        });
+    
+                        product.save(function ( err, results ) {
+                            res.redirect( '/products' );
+                        });
+                    });                                       
                 }
             });            
         }
