@@ -70,3 +70,7 @@
 .media {
   font-size: 10pt;
 }
+.fas, .fab{
+  width: 16px;
+  height: 16px;
+}
