@@ -95,7 +95,9 @@
       <div class="col-sm-12">
         <nav aria-label="breadcrumb">       
           <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">Home</li>
+            <% for( let key in breadcrumbs ) { %>
+              <%- breadcrumbs[key] %>
+            <% } %>             
           </ol>
         </nav>
       </div>
@@ -106,7 +108,6 @@
     <%- body -%>
   </div>
   
-  <script src="http://code.jquery.com/jquery-latest.js"></script>
-  <script src="/js/bootstrap.js"></script>
+  <script src="/dist/js/bootstrap.js"></script>
 </body>
 </html>
