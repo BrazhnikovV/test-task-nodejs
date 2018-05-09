@@ -12,6 +12,7 @@ var img_gen = require('js-image-generator');
 
 /* GET products page. */
 router.get( '/', function( req, res, next ) {      
+    console.log(res.locals);
     Product.find({},function ( err, results ) {
         if ( err ) {
             return console.error(err);

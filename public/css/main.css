@@ -47,6 +47,7 @@ body {
 .breadcrumb {
   margin-bottom: 5px;
   background-color: #dee2e6 !important;
+  border: 1px solid #d8d6d6;
 }
 
 /* ================ Helpers =================== */
@@ -77,6 +78,7 @@ body {
 .card-body {
   background: #868f96;
 }
+
 
 @media (max-width: 767px) {
   .btn-group {
