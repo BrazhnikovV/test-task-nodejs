@@ -87,6 +87,9 @@ body {
 
 
 @media (max-width: 767px) {
+  #count-products {
+    margin-bottom: 10px;
+  }
   .btn-group {
     margin-bottom: 10px;
   }

@@ -1,26 +1,42 @@
 <% layout('../layout') -%>
 <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-4">
             <h1><%= title %></h1>
+    </div>        
+    <div class="col-md-5 margin-auto text-right">        
+        <div class="btn-group" role="group" aria-label="Basic example">  
+            <a href="/products/add">
+                <button id="btn-add-user" type="button" class="btn btn-dark">
+                    <i class="far fa-plus-square" ></i>
+                    &nbsp;Добавить
+                </button>
+            </a>                      
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic example">  
+            <form id="del-all-products" method="post" action="/products/deleteall">
+                <button id="btn-add-user" type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i>
+                    &nbsp;Удалить все
+                </button>
+            </form>                                   
+        </div>   
     </div>    
-    <div class="col-md-7 margin-auto text-right">
-            <div class="btn-group" role="group" aria-label="Basic example">  
-                <a href="/products/add">
-                    <button id="btn-add-user" type="button" class="btn btn-dark">
-                        <i class="far fa-plus-square" ></i>
-                        &nbsp;Добавить
-                    </button>
-                </a>                      
+    <div class="col-md-3 margin-auto text-right">
+        <form id="count-products" method="post" action="/products/setcountproducts">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <button class="btn btn-outline-secondary" type="submit">Отправить</button>
+                </div>
+                <select class="custom-select" name="select_count_products" id="select_count_products">
+                    <option disabled selected value>Выберите кол-во продуктов</option>
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                    <option value="24">24</option>
+                    <option value="72">72</option>
+                </select>
             </div>
-            <div class="btn-group" role="group" aria-label="Basic example">  
-                <form id="del-all-products" method="post" action="/products/deleteall">
-                    <button id="btn-add-user" type="submit" class="btn btn-danger">
-                        <i class="fas fa-trash-alt"></i>
-                        &nbsp;Удалить все
-                    </button>
-                </form>                                   
-            </div>   
-    </div>    
+        </form>
+    </div>
 </div>
 <div class="row">
     <% products.forEach( function( product, index ) { %>

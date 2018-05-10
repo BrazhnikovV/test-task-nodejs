@@ -13,8 +13,6 @@ var img_gen = require('js-image-generator');
 var pagination = require('../app/components/pagination');
 // Объект pages
 var pages = {};
-// Количество продуктов на странице
-var count_prods_on_page = 2;
 
 /* GET products page. */
 router.get( '/', function( req, res, next ) {      
@@ -28,14 +26,14 @@ router.get( '/', function( req, res, next ) {
         pages = pagination.getObj( 
             results.length, 
             cur_page,
-            count_prods_on_page
+            req.session.cnt_products
         );
 
         if ( req.session.hasOwnProperty( 'user' ) ) {
             res.locals.user = req.session.user;            
             res.render( './pages/products', { 
                 title: 'Продукты', 
-                products: results.splice( 0, count_prods_on_page ),
+                products: results.splice( 0, req.session.cnt_products ),
                 pagination: pages
             });
         } 
@@ -43,7 +41,7 @@ router.get( '/', function( req, res, next ) {
             res.locals.user = 'Guest';
             res.render( './pages/products', { 
                 title: 'Продукты', 
-                products: results.splice( 0, count_prods_on_page ),
+                products: results.splice( 0, req.session.cnt_products ),
                 pagination: pages
             });     
         }                    
@@ -66,7 +64,7 @@ router.get( '/page/*', function( req, res, next ) {
             pages = pagination.getObj( 
                 cnt_results, 
                 cur_page,
-                count_prods_on_page
+                req.session.cnt_products
             );
     
             if ( req.session.hasOwnProperty( 'user' ) ) {
@@ -86,8 +84,8 @@ router.get( '/page/*', function( req, res, next ) {
                 });
             }
         })
-        .skip( ( cur_page -1 ) * count_prods_on_page )
-        .limit( count_prods_on_page * cur_page );
+        .skip( ( cur_page -1 ) * req.session.cnt_products )
+        .limit( req.session.cnt_products * cur_page );
     });    
 });
 
@@ -157,6 +155,20 @@ router.post( '/add',
                     });                                       
                 }
             });            
+        }
+    }
+);
+
+/* POST products/setcountproducts page. */
+router.post( '/setcountproducts',
+    function(req, res){        
+        if ( req.session.hasOwnProperty( 'user' ) ) {
+            res.locals.user = req.session.user;
+            req.session.cnt_products = req.body.select_count_products;
+            res.redirect( '/products' );
+        } 
+        else {
+            res.redirect( '/' );
         }
     }
 );
