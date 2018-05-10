@@ -48,16 +48,16 @@
     <div class="col-md-12">
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#">&lt;&lt;</a>
+                <li class="page-item <%= pagination.prev_disabled  %>">
+                    <a class="page-link" href="<% if( pagination.prev != -1 ) { %>/products/page/<%= pagination.prev %> <% } %>">&lt;&lt;</a>
                 </li>
-                <% for( let i = 0; i < pagination.cnt_records; i++ ) { %>
-                    <li class="page-item <% if( ( i + 1 ) == pagination.cur_page ) { %> active <% } %>">
+                <% for( let i = 0; i < pagination.cnt_buttons; i++ ) { %>
+                    <li class="page-item <% if( ( i + 1 ) == pagination.cur_page ) { %> disabled active <% } %>">
                         <a class="page-link" href="/products/page/<%= (i + 1) %>"><%= (i + 1) %></a>
                     </li>
                 <% } %>                 
-                <li class="page-item">
-                    <a class="page-link" href="#">&gt;&gt;</a>
+                <li class="page-item <%= pagination.next_disabled  %>">
+                    <a class="page-link" href="<% if( pagination.next != -1 ) { %>/products/page/<%= pagination.next %> <% } %>">&gt;&gt;</a>
                 </li>
             </ul>
         </nav>

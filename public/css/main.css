@@ -79,6 +79,12 @@ body {
   background: #868f96;
 }
 
+.page-item.active.disabled > a {
+  color: #fff !important;
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+} 
+
 
 @media (max-width: 767px) {
   .btn-group {

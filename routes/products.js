@@ -9,12 +9,12 @@ var Product = require( '../app/models/product' ).Product;
 // Генератор случайных картинок
 var fs = require('fs');
 var img_gen = require('js-image-generator');
-// Количество продуктов на странице
-var count_prods_on_page = 1;
-// Количество кнопок в пагинации
-var count_pgn_buttons = 5;
 // Объект pagination
-var pagination = {};
+var pagination = require('../app/components/pagination');
+// Объект pages
+var pages = {};
+// Количество продуктов на странице
+var count_prods_on_page = 2;
 
 /* GET products page. */
 router.get( '/', function( req, res, next ) {      
@@ -23,14 +23,20 @@ router.get( '/', function( req, res, next ) {
             return console.error( err );
         }
 
-        pagination.cnt_records = results.length;
+        let cur_page = 1; 
+        
+        pages = pagination.getObj( 
+            results.length, 
+            cur_page,
+            count_prods_on_page
+        );
 
         if ( req.session.hasOwnProperty( 'user' ) ) {
             res.locals.user = req.session.user;            
             res.render( './pages/products', { 
                 title: 'Продукты', 
                 products: results.splice( 0, count_prods_on_page ),
-                pagination: pagination
+                pagination: pages
             });
         } 
         else {
@@ -38,7 +44,7 @@ router.get( '/', function( req, res, next ) {
             res.render( './pages/products', { 
                 title: 'Продукты', 
                 products: results.splice( 0, count_prods_on_page ),
-                pagination: pagination
+                pagination: pages
             });     
         }                    
     });   
@@ -48,24 +54,27 @@ router.get( '/', function( req, res, next ) {
 router.get( '/page/*', function( req, res, next ) {      
     
     let arr_route = req.path.split("/");
-    let cur_page = arr_route[2];
-    //res.locals.breadcrumbs = {};
+    let cur_page  = parseInt( arr_route[2] );     
 
-    Product.count({}, function( err, cnt_results ) {               
-        pagination.cnt_records = cnt_results;
-        pagination.cur_page = cur_page;
+    Product.count({}, function( err, cnt_results ) {        
 
         Product.find( {}, function ( err, results ) {
             if ( err ) {
                 return console.error( err );
             }
+
+            pages = pagination.getObj( 
+                cnt_results, 
+                cur_page,
+                count_prods_on_page
+            );
     
             if ( req.session.hasOwnProperty( 'user' ) ) {
                 res.locals.user = req.session.user;            
                 res.render( './pages/products', { 
                     title: 'Продукты', 
                     products: results,
-                    pagination: pagination
+                    pagination: pages
                 });
             }
             else {
@@ -73,12 +82,12 @@ router.get( '/page/*', function( req, res, next ) {
                 res.render( './pages/products', { 
                     title: 'Продукты', 
                     products: results,
-                    pagination: pagination
+                    pagination: pages
                 });
             }
         })
-        .skip( ( cur_page -1 ) )
-        .limit( count_prods_on_page );
+        .skip( ( cur_page -1 ) * count_prods_on_page )
+        .limit( count_prods_on_page * cur_page );
     });    
 });
 

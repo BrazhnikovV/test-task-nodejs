@@ -7,7 +7,7 @@ var express_session = require( 'express-session' );
 var body_parser = require( 'body-parser' );
 // подключить cookie_parser
 var cookie_parser = require( 'cookie-parser' );
-// подключить cookie_parser
+// подключить базу данных mongodb
 var mongo_store = require('connect-mongo')( express_session );
 // подключить mongoose
 var mongoose = require( '../libs/mongoose' );
