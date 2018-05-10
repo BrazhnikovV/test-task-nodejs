@@ -23,7 +23,10 @@ router.get('*',function (req, res, next) {
             else {
                 res.locals.breadcrumbs = {
                     0 : '<li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i>гланая</a></li>',
-                    1 : '<li class="breadcrumb-item active" aria-current="page">' + breadcrumbs_names[parsed_url[1]] + '</li>' 
+                    1 : '<li class="breadcrumb-item active" aria-current="page">' 
+                    + 
+                        breadcrumbs_names[parsed_url[1]] 
+                    + '</li>' 
                 };
             }
         }
@@ -33,7 +36,7 @@ router.get('*',function (req, res, next) {
                 0 : '<li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i>гланая</a></li>',
                 1 : '<li class="breadcrumb-item"><a href="/' 
                 + 
-                    breadcrumbs_names[parsed_url[1]] + '">' + breadcrumbs_names[parsed_url[1]] 
+                    parsed_url[1] + '">' + breadcrumbs_names[parsed_url[1]] 
                 + '</a></li>',
                 2 : '<li class="breadcrumb-item active" aria-current="page">' 
                 + 
@@ -47,7 +50,7 @@ router.get('*',function (req, res, next) {
                 0 : '<li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i>гланая</a></li>',
                 1 : '<li class="breadcrumb-item"><a href="/' 
                 + 
-                    breadcrumbs_names[parsed_url[1]]
+                    parsed_url[1]
                 + '">' 
                 + 
                     breadcrumbs_names[parsed_url[1]]
