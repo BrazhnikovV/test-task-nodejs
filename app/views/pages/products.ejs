@@ -24,35 +24,41 @@
 </div>
 <div class="row">
     <% products.forEach( function( product, index ) { %>
-        <div class="col-md-3">        
-            <div class="card text-white bg-secondary mb-3">
-                <form id="<%= product.name %>" method="post" action="/products/delete">
-                    <input type="hidden" id="<%= product.name %>" name="product_name" value="<%= product.name %>" />
-                    <button type="submit" class="btn btn-danger del-product btn-sm">x</button>
-                </form>
-                <div class="card-header"><%= product.name %></div>
-                <div class="card-body">                                                          
-                    <h5 class="card-title"><%= product.title %></h5>  
-                    <div class="media-body">
-                        <div class="media">
-                            <img width="72" src="<%= product.image %>" alt="Тестовая картика" class="mr-3 img-thumbnail"/>                            
-                            <%= product.description %>
-                        </div>
-                    </div>                    
-                </div>
-            </div>      
-        </div>
+    <div class="col-md-3">        
+        <div class="card text-white bg-secondary mb-3">
+            <form id="<%= product.name %>" method="post" action="/products/delete">
+                <input type="hidden" id="<%= product.name %>" name="product_name" value="<%= product.name %>" />
+                <button type="submit" class="btn btn-danger del-product btn-sm">x</button>
+            </form>
+            <div class="card-header"><%= product.name %></div>
+            <div class="card-body">                                                          
+                <h5 class="card-title"><%= product.title %></h5>  
+                <div class="media-body">
+                    <div class="media">
+                        <img width="72" src="<%= product.image %>" alt="Тестовая картика" class="mr-3 img-thumbnail"/>                            
+                        <%= product.description %>
+                    </div>
+                </div>                    
+            </div>
+        </div>      
+    </div>
     <% }); %>        
 </div>
 <div class="row">
     <div class="col-md-12">
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">&lt;&lt;</a>
+                </li>
+                <% for( let i = 0; i < pagination.cnt_records; i++ ) { %>
+                    <li class="page-item <% if( ( i + 1 ) == pagination.cur_page ) { %> active <% } %>">
+                        <a class="page-link" href="/products/page/<%= (i + 1) %>"><%= (i + 1) %></a>
+                    </li>
+                <% } %>                 
+                <li class="page-item">
+                    <a class="page-link" href="#">&gt;&gt;</a>
+                </li>
             </ul>
         </nav>
     </div>    

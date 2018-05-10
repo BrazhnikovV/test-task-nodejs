@@ -19,8 +19,6 @@ var compression = require('compression');
 var helmet = require('helmet');
 // Подключить ejs-locals для лэйаута
 var ejsLocals = require( 'ejs-locals' );
-// Подключить постраничную навигацию
-var pagination = require( './components/pagination' );
 
 // Подключить роутеры
 var main   = require( '../routes/main' );
@@ -61,7 +59,6 @@ app.set( 'view engine', 'ejs' );
 
 // Обрабатываем заданные для приложения роуты 
 app.get( '*', main );
-app.use( pagination );
 app.use( '/', home );
 app.use( '/login', login );
 app.use( '/about', about );
