@@ -13,6 +13,8 @@ var img_gen = require('js-image-generator');
 var pagination = require('../app/components/pagination');
 // Объект pages
 var pages = {};
+// 
+var default_cnt_products = 2;
 
 /* GET products page. */
 router.get( '/', function( req, res, next ) {      
@@ -22,6 +24,10 @@ router.get( '/', function( req, res, next ) {
         }
 
         let cur_page = 1; 
+
+        if( typeof req.session.cnt_products == 'undefined' ) {
+            req.session.cnt_products = default_cnt_products;
+        }        
         
         pages = pagination.getObj( 
             results.length, 
@@ -52,7 +58,7 @@ router.get( '/', function( req, res, next ) {
 router.get( '/page/*', function( req, res, next ) {      
     
     let arr_route = req.path.split("/");
-    let cur_page  = parseInt( arr_route[2] );     
+    let cur_page  = parseInt( arr_route[2] );
 
     Product.count({}, function( err, cnt_results ) {        
 
@@ -162,14 +168,9 @@ router.post( '/add',
 /* POST products/setcountproducts page. */
 router.post( '/setcountproducts',
     function(req, res){        
-        if ( req.session.hasOwnProperty( 'user' ) ) {
-            res.locals.user = req.session.user;
-            req.session.cnt_products = req.body.select_count_products;
-            res.redirect( '/products' );
-        } 
-        else {
-            res.redirect( '/' );
-        }
+        res.locals.user = req.session.user;
+        req.session.cnt_products = req.body.select_count_products;
+        res.redirect( '/products' );
     }
 );
 
