@@ -77,6 +77,7 @@ body {
 }
 .card-body {
   background: #868f96;
+  padding: 10px 15px 15px 15px !important;
 }
 
 .page-item.active.disabled > a {

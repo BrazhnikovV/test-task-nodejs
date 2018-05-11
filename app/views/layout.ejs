@@ -96,8 +96,14 @@
         <nav aria-label="breadcrumb">       
           <ol class="breadcrumb">
             <% for( let key in breadcrumbs ) { %>
-              <%- breadcrumbs[key] %>
-            <% } %>             
+              <% if( breadcrumbs[key].link ) { %>
+                <li class="breadcrumb-item">
+                  <a href="<%= breadcrumbs[key].url %>"><%= breadcrumbs[key].name %></a>
+                </li>
+              <% } else { %>
+                <li class="breadcrumb-item active" aria-current="page"><%= breadcrumbs[key].name %></li>
+              <% } %>
+            <% } %>
           </ol>
         </nav>
       </div>
