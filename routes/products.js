@@ -13,44 +13,39 @@ var img_gen = require('js-image-generator');
 var pagination = require('../app/components/pagination');
 // Объект pages
 var pages = {};
-// 
-var default_cnt_products = 2;
+// Дефолтное количество продуктов на странице
+var default_cnt_products = 1;
 
 /* GET products page. */
 router.get( '/', function( req, res, next ) {      
-    Product.find({},function ( err, results ) {
+    Product.find({},function ( err, products ) {
         if ( err ) {
             return console.error( err );
         }
 
+        // !!! Необходимо вынести
+        res.locals.user = 'Guest';
+        if ( req.session.hasOwnProperty( 'user' ) ) {
+            res.locals.user = req.session.user;
+        }
+
         let cur_page = 1; 
 
-        if( typeof req.session.cnt_products == 'undefined' ) {
-            req.session.cnt_products = default_cnt_products;
+        if( typeof req.session.cnt_products_on_page == 'undefined' ) {
+            req.session.cnt_products_on_page = default_cnt_products;
         }        
         
         pages = pagination.getObj( 
-            results.length, 
+            products.length, 
             cur_page,
-            req.session.cnt_products
-        );
-
-        if ( req.session.hasOwnProperty( 'user' ) ) {
-            res.locals.user = req.session.user;            
-            res.render( './pages/products', { 
-                title: 'Продукты', 
-                products: results.splice( 0, req.session.cnt_products ),
-                pagination: pages
-            });
-        } 
-        else {
-            res.locals.user = 'Guest';
-            res.render( './pages/products', { 
-                title: 'Продукты', 
-                products: results.splice( 0, req.session.cnt_products ),
-                pagination: pages
-            });     
-        }                    
+            req.session.cnt_products_on_page
+        );        
+       
+        res.render( './pages/products', { 
+            title: 'Продукты', 
+            products: products.splice( 0, req.session.cnt_products_on_page ),
+            pagination: pages
+        });                
     });   
 });
 
@@ -62,7 +57,7 @@ router.get( '/page/*', function( req, res, next ) {
 
     Product.count({}, function( err, cnt_results ) {        
 
-        Product.find( {}, function ( err, results ) {
+        Product.find( {}, function ( err, products ) {
             if ( err ) {
                 return console.error( err );
             }
@@ -70,47 +65,37 @@ router.get( '/page/*', function( req, res, next ) {
             pages = pagination.getObj( 
                 cnt_results, 
                 cur_page,
-                req.session.cnt_products
+                req.session.cnt_products_on_page
             );
-    
+
+            // !!! Необходимо вынести
+            res.locals.user = 'Guest';
             if ( req.session.hasOwnProperty( 'user' ) ) {
-                res.locals.user = req.session.user;            
-                res.render( './pages/products', { 
-                    title: 'Продукты', 
-                    products: results,
-                    pagination: pages
-                });
+                res.locals.user = req.session.user;
             }
-            else {
-                res.locals.user = 'Guest';
-                res.render( './pages/products', { 
-                    title: 'Продукты', 
-                    products: results,
-                    pagination: pages
-                });
-            }
+           
+            res.render( './pages/products', { 
+                title: 'Продукты', 
+                products: products,
+                pagination: pages
+            });
         })
-        .skip( ( cur_page -1 ) * req.session.cnt_products )
-        .limit( req.session.cnt_products * cur_page );
+        .skip( ( cur_page -1 ) * req.session.cnt_products_on_page )
+        .limit( req.session.cnt_products_on_page );
     });    
 });
 
 /* GET products/add page. */
 router.get( '/add', function( req, res, next ) {
+    res.locals.user = 'Guest';
     if ( req.session.hasOwnProperty( 'user' ) ) {
         res.locals.user = req.session.user;
-        res.render( './pages/productadd', { 
-            title: 'Добавить продукт',
-            errors: [],
-        });
     }
-    else {
-        res.locals.user = 'Guest';
-        res.render( './pages/productadd', { 
-            title: 'Добавить продукт',
-            errors: [],
-        });
-    }
+    
+    res.render( './pages/productadd', { 
+        title: 'Добавить продукт',
+        errors: [],
+    });
 });
 
 /* POST products/add page. */
@@ -132,21 +117,25 @@ router.post( '/add',
             });
         } 
         else {
-            Product.find({ username: req.form.name },function ( err, results ) {
+            Product.find({ username: req.form.name },function ( err, products ) {
                 if ( err ) {
                     return console.error(err);
                 }
 
-                if ( results.length ) {
+                res.locals.user = 'Guest';
+                if ( req.session.hasOwnProperty( 'user' ) ) {
                     res.locals.user = req.session.user;
+                }
+
+                if ( products.length ) {
                     res.render( 'pages/productadd', { 
                         title: 'Добавить продукт', 
                         errors: ['Продукт существует.']
                     });                    
                 }
                 else {
-                    img_gen.generateImage(800, 600, 80, function(err, image) {
-                        fs.writeFileSync('public/dist/images/'+req.form.name+'.jpg', image.data);
+                    img_gen.generateImage(800, 600, 80, function( err, image ) {
+                        fs.writeFileSync('public/dist/images/'+req.form.name+'.jpg', image.data );
 
                         var product = new Product({ 
                             name: req.form.name, 
@@ -155,7 +144,7 @@ router.post( '/add',
                             image: '/dist/images/'+req.form.name+'.jpg'
                         });
     
-                        product.save(function ( err, results ) {
+                        product.save(function ( err, products ) {
                             res.redirect( '/products' );
                         });
                     });                                       
@@ -169,46 +158,42 @@ router.post( '/add',
 router.post( '/setcountproducts',
     function(req, res){        
         res.locals.user = req.session.user;
-        req.session.cnt_products = req.body.select_count_products;
+        req.session.cnt_products_on_page = req.body.select_count_products;
         res.redirect( '/products' );
     }
 );
 
 /* POST products/delete page. */
 router.post( '/delete',
-    function(req, res){        
+    function(req, res){
+        res.locals.user = 'Guest';
         if ( req.session.hasOwnProperty( 'user' ) ) {
-            res.locals.user = req.session.user; 
-            Product.findOneAndRemove({ name: req.body.product_name },function ( err, results ) {
-                if ( err ) {
-                    return console.error(err);
-                }
-
-                res.redirect( '/products' );
-            });
-        } 
-        else {
-            res.redirect( '/products' );
+            res.locals.user = req.session.user;
         }
+
+        Product.findOneAndRemove({ name: req.body.product_name },function ( err, products ) {
+            if ( err ) {
+                return console.error(err);
+            }
+            res.redirect( '/products' );
+        });
     }
 );
 
 /* POST products/deleteall page. */
 router.post( '/deleteall',
-    function(req, res){        
+    function( req, res ){        
+        res.locals.user = 'Guest';
         if ( req.session.hasOwnProperty( 'user' ) ) {
-            res.locals.user = req.session.user; 
-            Product.remove(function ( err, results ) {
-                if ( err ) {
-                    return console.error(err);
-                }
-
-                res.redirect( '/products' );
-            });
+            res.locals.user = req.session.user;
         } 
-        else {
+
+        Product.remove(function ( err, products ) {
+            if ( err ) {
+                return console.error(err);
+            }
             res.redirect( '/products' );
-        }
+        });
     }
 );
 

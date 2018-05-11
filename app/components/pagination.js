@@ -28,7 +28,7 @@ var pagination = {
         out_pgn.cnt_buttons = Math.ceil( cnt_elements / count_prods_on_page );
 
         if ( cur_page === out_pgn.cnt_buttons ) {            
-            out_pgn.next = -1;
+            out_pgn.next = '';
             out_pgn.next_disabled = 'disabled';
         }
         else {
@@ -36,7 +36,7 @@ var pagination = {
         }
     
         if ( cur_page === 1 ) {
-            out_pgn.prev = -1;
+            out_pgn.prev = '';
             out_pgn.prev_disabled = 'disabled';
         }
         else {
