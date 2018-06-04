@@ -109,8 +109,13 @@ router.post( '/add',
 
     // Express request-handler now receives filtered and validated data 
     function(req, res){
+        res.locals.breadcrumbs = {};
+        res.locals.user = 'Guest';
+        if ( req.session.hasOwnProperty( 'user' ) ) {
+            res.locals.user = req.session.user;
+        }
+
         if ( !req.form.isValid ) {
-            res.locals.user = req.session.user; 
             res.status(401).render( 'pages/productadd', { 
                 title: 'Добавить продукт', 
                 errors: req.form.errors,
@@ -120,12 +125,7 @@ router.post( '/add',
             Product.find({ username: req.form.name },function ( err, products ) {
                 if ( err ) {
                     return console.error(err);
-                }
-
-                res.locals.user = 'Guest';
-                if ( req.session.hasOwnProperty( 'user' ) ) {
-                    res.locals.user = req.session.user;
-                }
+                }                
 
                 if ( products.length ) {
                     res.render( 'pages/productadd', { 
