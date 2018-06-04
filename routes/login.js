@@ -31,6 +31,7 @@ router.post( '/',
 
     // Express request-handler now receives filtered and validated data 
     function(req, res){
+        res.locals.breadcrumbs = {};
         if ( !req.form.isValid ) {
             res.render( 'pages/login', { 
                 title: req.form.errors, 
